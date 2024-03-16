@@ -1,8 +1,13 @@
-#include "Framework.h"
+#pragma once
+#include "fileman.h"
 
 
 void FileMan::GetWindowsTempFold() {
-    dwRetVal = GetTempPath(MAX_PATH,          // length of the buffer
+    m_dwRetVal = GetTempPath(MAX_PATH,          // length of the buffer
         lpTempPathBuffer);
 
+}
+
+void FileMan::GetOSTempFold(){
+    GetWindowsDirectory(infoBuf, 32767);
 }

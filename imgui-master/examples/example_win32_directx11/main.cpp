@@ -11,6 +11,7 @@
 #include "imgui_impl_dx11.h"
 #include <d3d11.h>
 #include <tchar.h>
+#include "fileman.h"
 
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
@@ -83,6 +84,7 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    FileMan* test1 = new FileMan;
     // Main loop
     bool done = false;
     while (!done)
@@ -131,7 +133,7 @@ int main(int, char**)
 
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
+            test1->GetOSTempFold();
             if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 counter++;
             ImGui::SameLine();
