@@ -13,5 +13,8 @@ void FileMan::GetOSTempFold(){
    // GetWindowsDirectoryW(infoBuf, 32767); old legacy windows code
     SHGetKnownFolderPath(FOLDERID_Windows, 0, NULL, &OSTempPath);
     //Fixed to use newer windows function. was using legacy windows function that use bad datatypes.
-    auto test = OSTempPath + ConcatVar;
+    std::wstringstream ConcatVar;
+    ConcatVar << OSTempPath << L"\\Temp";
+    CoTaskMemFree(static_cast<void*>(OSTempPath));
+    int i;
 }

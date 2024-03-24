@@ -1,6 +1,8 @@
 #pragma once
 #include "windows.h"
-#include "iostream"
+#include <iostream>
+#include <sstream>
+//#include <string>
 
 
 
@@ -10,8 +12,8 @@ private:
     TCHAR lpTempPathBuffer[MAX_PATH];
     DWORD m_dwRetVal = 0;
     //TCHAR infoBuf[32767] = { '\0' };
-    PWSTR OSTempPath = NULL;
-    std::string ConcatVar = "\\Temp";
+    wchar_t * OSTempPath = 0;
+ 
 
 public:
   //  FileMan();
