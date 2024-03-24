@@ -2,24 +2,25 @@
 #include "windows.h"
 #include <iostream>
 #include <sstream>
-//#include <string>
+#include <filesystem>
 
 
 
 class FileMan
 {
 private:
-    TCHAR lpTempPathBuffer[MAX_PATH];
+    wchar_t lpTempPathBuffer[MAX_PATH]; //or use TCHAR
     DWORD m_dwRetVal = 0;
     //TCHAR infoBuf[32767] = { '\0' };
     wchar_t * OSTempPath = 0;
+    wchar_t* tempAdd = L"\\temp";
  
 
 public:
   //  FileMan();
    // ~FileMan();
 
-   
+    void deleteDir(const std::filesystem::path& dir);
     void GetWindowsTempFold();
     void GetOSTempFold();
 
