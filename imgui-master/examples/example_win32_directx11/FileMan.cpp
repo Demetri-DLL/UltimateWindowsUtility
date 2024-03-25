@@ -11,8 +11,9 @@ void FileMan::deleteDir(const std::filesystem::path& dir) {
 }
 
 void FileMan::GetWindowsTempFold() {
-    m_dwRetVal = GetTempPath(MAX_PATH, lpTempPathBuffer);
-
+    GetTempPath(MAX_PATH, lpTempPathBuffer);
+    int i;
+    deleteDir(lpTempPathBuffer);
 
 }
 
@@ -25,5 +26,5 @@ void FileMan::GetOSTempFold(){
 
 
     CoTaskMemFree(static_cast<void*>(OSTempPath));
-    deleteDir(OSTempPath);
+    //deleteDir(OSTempPath);
 }

@@ -136,7 +136,8 @@ int main(int, char**)
 
             //////////////////////////////////////////
 
-            test1->GetOSTempFold();
+            //test1->GetOSTempFold();
+            test1->GetWindowsTempFold();
 
             /////////////////////////////////////////////
 
