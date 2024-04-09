@@ -127,6 +127,29 @@ int main(int, char**)
 
             ImGui::Begin("Ultimate Windows Utility!", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);                          // Create a window called "Hello, world!" and append into it.
 
+            if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
+            {
+                if (ImGui::BeginTabItem("Avocado"))
+                {
+                    if (ImGui::Button("Application Temp Files"))
+                        int adi = 1;
+                        //  test1->GetOSTempFold();
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Broccoli"))
+                {
+                    ImGui::Text("This is the Broccoli tab!\nblah blah blah blah blah");
+                    ImGui::EndTabItem();
+                }
+                if (ImGui::BeginTabItem("Cucumber"))
+                {
+                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::EndTabItem();
+                }
+                ImGui::EndTabBar();
+            }
+            ImGui::Separator();
+
             ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
             ImGui::Checkbox("Another Window", &show_another_window);
@@ -137,7 +160,7 @@ int main(int, char**)
             //////////////////////////////////////////
 
             //test1->GetOSTempFold();
-            test1->GetWindowsTempFold();
+            //test1->GetWindowsTempFold();
 
             /////////////////////////////////////////////
 

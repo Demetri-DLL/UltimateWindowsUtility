@@ -13,7 +13,7 @@ void FileMan::deleteDir(const std::filesystem::path& dir) {
 void FileMan::GetWindowsTempFold() {
     GetTempPath(MAX_PATH, lpTempPathBuffer);
     int i;
-    deleteDir(lpTempPathBuffer);
+   // deleteDir(lpTempPathBuffer);
 
 }
 
