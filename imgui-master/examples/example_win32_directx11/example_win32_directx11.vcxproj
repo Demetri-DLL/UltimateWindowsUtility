@@ -160,6 +160,7 @@
     <ClInclude Include="..\..\backends\imgui_impl_win32.h" />
     <ClInclude Include="FileMan.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="ResMon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="..\..\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="FileMan.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ResMon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\misc\debuggers\imgui.natstepfilter" />

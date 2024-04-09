@@ -12,6 +12,7 @@
 #include <d3d11.h>
 #include <tchar.h>
 #include "fileman.h"
+#include "ResMon.h"
 
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
@@ -85,6 +86,7 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     FileMan* test1 = new FileMan;
+    ResMon* test2 = new ResMon;
     // Main loop
     bool done = false;
     while (!done)
@@ -124,24 +126,30 @@ int main(int, char**)
         {
             static float f = 0.0f;
             static int counter = 0;
-
-            ImGui::Begin("Ultimate Windows Utility!", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize);                          // Create a window called "Hello, world!" and append into it.
+            ImGui::SetNextWindowSize(ImVec2(800, 600));
+            ImGui::Begin("Ultimate Windows Utility!", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);                          // Create a window called "Hello, world!" and append into it.
+ 
+            ImGui::SetWindowPos(ImVec2(0, 0));
 
             if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
             {
-                if (ImGui::BeginTabItem("Avocado"))
+                if (ImGui::BeginTabItem("File Management"))
                 {
                     if (ImGui::Button("Application Temp Files"))
                         int adi = 1;
                         //  test1->GetOSTempFold();
+                    ImGui::SameLine();
+                    if (ImGui::Button("OS TempFiles"))
+                        int dsda = 2;
                     ImGui::EndTabItem();
                 }
-                if (ImGui::BeginTabItem("Broccoli"))
+                if (ImGui::BeginTabItem("Resource Monitoring"))
                 {
-                    ImGui::Text("This is the Broccoli tab!\nblah blah blah blah blah");
+                    if (ImGui::Button("Debug Button"))
+                        test2->Run();
                     ImGui::EndTabItem();
                 }
-                if (ImGui::BeginTabItem("Cucumber"))
+                if (ImGui::BeginTabItem("Misc"))
                 {
                     ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
                     ImGui::EndTabItem();
