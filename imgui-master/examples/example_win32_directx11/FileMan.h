@@ -14,20 +14,17 @@ private:
     //TCHAR infoBuf[32767] = { '\0' };
     wchar_t* OSTempPath = 0;
     wchar_t* tempAdd = L"\\temp";
-    wchar_t convertBuff[128];
- 
+    //wchar_t convertBuff[128];
+    wchar_t* chromePath = L"\\Local\\Google\\Chrome\\User Data";
+    wchar_t* chromePathTemp = 0;
+
+    std::error_code errorCode;
 
 public:
-  //  FileMan();
-   // ~FileMan();
 
     void deleteDir(const std::filesystem::path& dir);
     void GetWindowsTempFold();
     void GetOSTempFold();
-
-
-
-
-
+    void GetChromeTemp();
 };
 

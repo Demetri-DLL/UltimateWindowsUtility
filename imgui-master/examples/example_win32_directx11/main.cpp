@@ -136,11 +136,12 @@ int main(int, char**)
                 if (ImGui::BeginTabItem("File Management"))
                 {
                     if (ImGui::Button("Application Temp Files"))
-                        int adi = 1;
-                        //  test1->GetOSTempFold();
+                        test1->GetWindowsTempFold();
                     ImGui::SameLine();
                     if (ImGui::Button("OS TempFiles"))
-                        int dsda = 2;
+                        test1->GetOSTempFold();
+                    if (ImGui::Button("Chrome User Data"))
+                        test1->GetChromeTemp();
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Resource Monitoring"))
@@ -160,10 +161,10 @@ int main(int, char**)
 
             ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
+            //ImGui::Checkbox("Another Window", &show_another_window);
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            //ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            //ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
             //////////////////////////////////////////
 
