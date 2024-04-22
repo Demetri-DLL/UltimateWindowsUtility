@@ -4,7 +4,7 @@
 #include <wchar.h>
 
 void FileMan::deleteDir(const std::filesystem::path& dir) {
-    for (const auto& entry : std::filesystem::directory_iterator(dir))
+    for (const auto& entry : std::filesystem::directory_iterator(dir)) // stack overflow https://stackoverflow.com/questions/59077670/c-delete-all-files-and-subfolders-but-keep-the-directory-itself
         std::filesystem::remove_all(entry.path(),errorCode);
     //filesystem is a c++ 17 feature
 
@@ -32,5 +32,5 @@ void FileMan::GetOSTempFold(){
 void FileMan::GetChromeTemp() {
     SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, NULL, &chromePathTemp);
     wcsncat(chromePathTemp, chromePath,30);
-    deleteDir(chromePathTemp);
+    //deleteDir(chromePathTemp);
 }

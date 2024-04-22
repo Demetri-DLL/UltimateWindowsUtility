@@ -1,6 +1,6 @@
 #include "ResMon.h"
 
-
+/*
 UINT64 ResMon::GetTheImages(DWORD Pid) {
 
     auto Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, Pid);
@@ -24,6 +24,7 @@ UINT64 ResMon::GetTheImages(DWORD Pid) {
 
     return TotalSize;
 }
+*/
 
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
 
@@ -38,24 +39,26 @@ UINT64 ResMon::GetTheMapped(DWORD Pid) {
     if (!GetProcessMemoryInfo(Process, &MemoryInfo, MemoryInfo.cb))
         return false;
 
-    return MemoryInfo.WorkingSetSize;
+    return MemoryInfo.PagefileUsage;
 }
 
 /* Actual memory usage calculator bla bla bla */
 void ResMon::GetTheInfo(PROCESSENTRY32 Process) {
-
+    
     auto Pid = Process.th32ProcessID;
-
+    
     printf("Process: %ws \n", Process.szExeFile);
-
+    /*
     auto ImageSizes = GetTheImages(Pid);
 
     printf("Size of all loaded images: 0x%llX \n", ImageSizes);
-
+    */
     auto MappedBytes = GetTheMapped(Pid);
 
     printf("MappedBytes: 0x%llX \n", MappedBytes);
-    auto Total = MappedBytes + ImageSizes;
+    auto Total = MappedBytes;
+    std::wstring ProcName(Process.szExeFile);
+    processMap[ProcName] += Total;
     printf("Total Memory Usage: 0x%llX \n", Total);
     printf("\n");
 }
@@ -67,7 +70,6 @@ bool ResMon::EnumProcesses() {
     Entry.dwSize = sizeof(Entry);
     if (Process32First(Snapshot, &Entry)) {
         do {
-            if (!std::wstring(Entry.szExeFile).compare(L"ProcessHacker.exe"))
                 (void)GetTheInfo(Entry);
         } while (Process32Next(Snapshot, &Entry));
     }

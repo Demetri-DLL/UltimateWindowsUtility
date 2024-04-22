@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <TlHelp32.h>
 #include <Psapi.h>
+#include <unordered_map>
 
 class ResMon
 {
@@ -12,6 +13,6 @@ public:
     void GetTheInfo(PROCESSENTRY32 Process);
     bool EnumProcesses();
     int Run();
-
+    std::unordered_map<std::wstring, UINT64> processMap;
 };
 

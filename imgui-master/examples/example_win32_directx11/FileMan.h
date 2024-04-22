@@ -15,7 +15,7 @@ private:
     wchar_t* OSTempPath = 0;
     wchar_t* tempAdd = L"\\temp";
     //wchar_t convertBuff[128];
-    wchar_t* chromePath = L"\\Local\\Google\\Chrome\\User Data";
+    wchar_t* chromePath = L"\\Google\\Chrome\\User Data";
     wchar_t* chromePathTemp = 0;
 
     std::error_code errorCode;
