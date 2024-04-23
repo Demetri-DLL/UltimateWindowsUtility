@@ -29,6 +29,12 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="ResMon.h" />
+    <ClInclude Include="..\..\implot.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\implot_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
@@ -57,6 +63,15 @@
     </ClCompile>
     <ClCompile Include="FileMan.cpp" />
     <ClCompile Include="ResMon.cpp" />
+    <ClCompile Include="..\..\implot.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\implot_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\implot_items.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.txt" />

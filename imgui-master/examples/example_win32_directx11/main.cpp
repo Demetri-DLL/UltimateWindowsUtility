@@ -13,6 +13,7 @@
 #include <tchar.h>
 #include "fileman.h"
 #include "ResMon.h"
+#include "implot.h"
 
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
@@ -130,7 +131,10 @@ int main(int, char**)
             ImGui::Begin("Ultimate Windows Utility!", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);                          // Create a window called "Hello, world!" and append into it.
  
             ImGui::SetWindowPos(ImVec2(0, 0));
-
+            ImPlot::CreateContext();
+            ImPlot::ShowDemoWindow();
+            ImPlot::DestroyContext();
+            
             if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
             {
                 if (ImGui::BeginTabItem("File Management"))
@@ -148,6 +152,37 @@ int main(int, char**)
                 {
                     if (ImGui::Button("Debug Button"))
                         test2->Run();
+
+                    ImGui::SetNextItemWidth(250);
+                    //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
+                    ImPlot::CreateContext();
+                    if (ImPlot::BeginPlot("##Pie1", ImVec2(250, 250), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
+                        ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+                        ImPlot::SetupAxesLimits(0, 1, 0, 1);
+                        std::vector<UINT64> testing2 = { 11351351,16416517,1357542562,1346134613 };
+                        //static const char* labels1[] = { "Frogs","Hogs","Dogs","Logs" };
+                       //std::vector<char*>plswork = { "hello","jiwj" };
+                        const int arraySize = 243;
+                        const char* aArray[arraySize];
+                        const char alphabet[] = "abcdefghijklmnopqrstuvwxyz";
+                        int alphabetLength = strlen(alphabet); // Get the length of the alphabet
+
+                        for (int i = 0; i < arraySize; ++i) {
+                            // Calculate the index of the letter in the range [0, 25] (corresponding to 'a' to 'z')
+                            int letterIndex = i % alphabetLength;
+                            // Allocate memory for the character and copy it from the alphabet array
+                            char* letter = new char[2]; // Allocate memory for one character and null terminator
+                            letter[0] = alphabet[letterIndex];
+                            letter[1] = '\0'; // Null-terminate the string
+                            // Assign the character to the array
+                            aArray[i] = letter;
+                        }
+                        if(test2->ProcNames.size()>1)
+                        ImPlot::PlotPieChart(aArray, test2->ProcUsage.data(), 4, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        ImPlot::EndPlot();
+                        ImPlot::DestroyContext;
+                    }
+
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Misc"))
