@@ -152,7 +152,6 @@ int main(int, char**)
                 {
                     if (ImGui::Button("Debug Button"))
                         test2->Run();
-
                     ImGui::SetNextItemWidth(250);
                     //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
                     ImPlot::CreateContext();
@@ -168,15 +167,16 @@ int main(int, char**)
                         int alphabetLength = strlen(alphabet); // Get the length of the alphabet
 
                         for (int i = 0; i < arraySize; ++i) {
-                            // Calculate the index of the letter in the range [0, 25] (corresponding to 'a' to 'z')
+                            
                             int letterIndex = i % alphabetLength;
-                            // Allocate memory for the character and copy it from the alphabet array
-                            char* letter = new char[2]; // Allocate memory for one character and null terminator
+                            // Alloc memory for the character and copy it from the alphabet array
+                            char* letter = new char[2];
                             letter[0] = alphabet[letterIndex];
-                            letter[1] = '\0'; // Null-terminate the string
-                            // Assign the character to the array
+                            letter[1] = '\0'; 
+                            
                             aArray[i] = letter;
                         }
+                        
                         if(test2->ProcNames.size()>1)
                         ImPlot::PlotPieChart(aArray, test2->ProcUsage.data(), 4, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();

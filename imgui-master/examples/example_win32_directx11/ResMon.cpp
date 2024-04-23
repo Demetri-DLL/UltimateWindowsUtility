@@ -27,15 +27,7 @@ UINT64 ResMon::GetTheImages(DWORD Pid) {
 */
 
 
-void ResMon::convertWStringToCharPtr(_In_ std::wstring input, _Out_ char* outputString)
-{
-    size_t outputSize = input.length() + 1; // +1 for null terminator
-    outputString = new char[outputSize];
-    size_t charsConverted = 0;
-    const wchar_t* inputW = input.c_str();
-    wcstombs_s(&charsConverted, outputString, outputSize, inputW, input.length());
-    // stack overflow code. https://stackoverflow.com/questions/18645874/converting-stdwsting-to-char-with-wcstombs-s
-}
+
 
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
 
@@ -69,12 +61,12 @@ void ResMon::GetTheInfo(PROCESSENTRY32 Process) {
     printf("MappedBytes: 0x%llX \n", MappedBytes);
     auto Total = MappedBytes;
     std::wstring ProcNameConvert(Process.szExeFile); //convert the WCHAR to a string so it can be used in the map
-    char buff[20];
-    convertWStringToCharPtr(ProcNameConvert, buff);
 
-    //processMap[ProcName] += Total; //add the keys that have the same process name. [] operator with maps can be dangerous.
-    ProcUsage.push_back(Total);
-    ProcNames.push_back(buff);//vectors are easier to use with the IMplot library
+    if (std::wstring(Process.szExeFile).compare(L"System")&& std::wstring(Process.szExeFile).compare(L"Registry")) {//remove some problemetic processes from the loop
+        //processMap[ProcName] += Total; //add the keys that have the same process name. [] operator with maps can be dangerous.
+        ProcUsage.push_back(Total);
+        ProcNames.push_back(ProcNameConvert);//vectors are easier to use with the IMplot library
+    }
 
     printf("Total Memory Usage: 0x%llX \n", Total);
     printf("\n");

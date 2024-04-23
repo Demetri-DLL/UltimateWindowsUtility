@@ -606,7 +606,7 @@ void Demo_InfiniteLines() {
 
 void Demo_PieCharts() {
     static const char* labels1[]    = {"Frogs","Hogs","Dogs","Logs"};
-    static float data1[]            = {0.15f,  0.30f,  0.2f, 0.05f};
+    static float data1[]            = {15.0f,  30.0f,  0.2f, 5.0f};
     static ImPlotPieChartFlags flags = 0;
     ImGui::SetNextItemWidth(250);
     ImGui::DragFloat4("Values", data1, 0.01f, 0, 1);
