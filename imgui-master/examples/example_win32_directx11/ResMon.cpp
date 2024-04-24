@@ -27,19 +27,15 @@ UINT64 ResMon::GetTheImages(DWORD Pid) {
 */
 
 
-std::vector<float> ResMon::convertToFloatVector(const std::vector<UINT64>& uint64Vector) {
-    std::vector<float> floatVector;
-    floatVector.reserve(uint64Vector.size());
+void ResMon::WstringVecToString(std::vector<std::wstring>ProcNames) {
 
-    for (uint64_t value : uint64Vector) {
-        // Extract the 5 most significant bits and convert them to a float
-        float floatValue = static_cast<float>((value >> 59) & 0x1F); // 59 is 64 - 5
 
-        // Add the float value to the result vector
-        floatVector.push_back(floatValue);
+    for (int i = 0; i < ProcNames.size(); i++) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+
+    StringBuff.push_back( converter.to_bytes(ProcNames[i]));
     }
 
-    return floatVector;
 }
 
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
@@ -95,6 +91,7 @@ bool ResMon::EnumProcesses() {
                 (void)GetTheInfo(Entry);
         } while (Process32Next(Snapshot, &Entry));
     }
+    WstringVecToString(ProcNames);
     CloseHandle(Snapshot);
     return true;
 }
