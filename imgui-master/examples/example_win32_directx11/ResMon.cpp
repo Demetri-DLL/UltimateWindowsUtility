@@ -30,7 +30,7 @@ UINT64 ResMon::GetTheImages(DWORD Pid) {
 void ResMon::WstringVecToString(std::vector<std::wstring>ProcNames) {
 
 
-    for (int i = 0; i < ProcNames.size(); i++) {
+    for (int i = 0; i < ProcNames.size(); i++) {//this can be simplified so that there is only 1 buffer and 1 loop. The wstring can be converted to a string and then a char and then put into the vector.
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
     StringBuff.push_back( converter.to_bytes(ProcNames[i]));
@@ -101,6 +101,16 @@ bool ResMon::EnumProcesses() {
     return true;
 }
 int ResMon::Run() {
+    processMap.clear();
+    ProcNames.clear();
+    ProcUsage.clear();
+    StringBuff.clear();
+    CharBuff.clear();
     (void)EnumProcesses();
     return 0;
+}
+
+void ResMon::StorageInfo() {
+    GetDiskFreeSpaceExA(NULL, NULL, NULL, FreeBytes);
+
 }

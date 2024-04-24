@@ -9,12 +9,13 @@
 #include <codecvt>
 
 class ResMon
-{
+{//could use private functions and variables instead of making everything public
 public:
     UINT64 GetTheImages(DWORD Pid);
     UINT64 GetTheMapped(DWORD Pid);
     void GetTheInfo(PROCESSENTRY32 Process);
     void WstringVecToString(std::vector<std::wstring>ProcNames);
+    void StorageInfo();
     bool EnumProcesses();
     int Run();
     std::unordered_map<std::wstring, UINT64> processMap;
@@ -22,5 +23,6 @@ public:
     std::vector<UINT64> ProcUsage;
     std::vector<std::string> StringBuff;
     std::vector<char*> CharBuff;
+    PULARGE_INTEGER FreeBytes;
 };
 
