@@ -21,5 +21,6 @@ public:
     std::vector<std::wstring> ProcNames;
     std::vector<UINT64> ProcUsage;
     std::vector<std::string> StringBuff;
+    std::vector<char*> CharBuff;
 };
 

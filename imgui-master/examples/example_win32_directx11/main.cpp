@@ -178,7 +178,7 @@ int main(int, char**)
                         }
                         
                         if(test2->ProcNames.size()>1)
-                        ImPlot::PlotPieChart(aArray, test2->ProcUsage.data(), 4, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        ImPlot::PlotPieChart(test2->CharBuff.data(), test2->ProcUsage.data(), 4, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext;
                     }

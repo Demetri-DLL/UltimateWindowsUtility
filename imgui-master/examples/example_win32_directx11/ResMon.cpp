@@ -36,8 +36,13 @@ void ResMon::WstringVecToString(std::vector<std::wstring>ProcNames) {
     StringBuff.push_back( converter.to_bytes(ProcNames[i]));
     }
 
-}
+    for (int i = 0; i < StringBuff.size(); i++) {
+        char* cstr = StringBuff[i].data();
+        CharBuff.push_back(cstr);
+    }
 
+}
+//https://stackoverflow.com/questions/4804298/how-to-convert-wstring-into-string above code was inspired from this threads information As well as this https://stackoverflow.com/questions/7352099/stdstring-to-char
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
 
     auto Process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, Pid);
