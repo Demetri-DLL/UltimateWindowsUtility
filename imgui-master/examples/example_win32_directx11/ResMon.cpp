@@ -27,7 +27,20 @@ UINT64 ResMon::GetTheImages(DWORD Pid) {
 */
 
 
+std::vector<float> ResMon::convertToFloatVector(const std::vector<UINT64>& uint64Vector) {
+    std::vector<float> floatVector;
+    floatVector.reserve(uint64Vector.size());
 
+    for (uint64_t value : uint64Vector) {
+        // Extract the 5 most significant bits and convert them to a float
+        float floatValue = static_cast<float>((value >> 59) & 0x1F); // 59 is 64 - 5
+
+        // Add the float value to the result vector
+        floatVector.push_back(floatValue);
+    }
+
+    return floatVector;
+}
 
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
 
