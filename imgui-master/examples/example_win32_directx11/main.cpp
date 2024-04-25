@@ -152,6 +152,7 @@ int main(int, char**)
                 {
                     if (ImGui::Button("Debug Button"))
                         test2->Run();
+                    test2->StorageInfo();
                     ImGui::SetNextItemWidth(250);
                     //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
                     ImPlot::CreateContext();
@@ -159,8 +160,6 @@ int main(int, char**)
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                         ImPlot::SetupAxesLimits(0, 1, 0, 1);
                         std::vector<UINT64> testing2 = { 11351351,16416517,1357542562,1346134613 };
-                        //static const char* labels1[] = { "Frogs","Hogs","Dogs","Logs" };
-                       //std::vector<char*>plswork = { "hello","jiwj" };
                         if(test2->ProcNames.size()>1)
                         ImPlot::PlotPieChart(test2->CharBuff.data(), test2->ProcUsage.data(), test2->ProcUsage.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();

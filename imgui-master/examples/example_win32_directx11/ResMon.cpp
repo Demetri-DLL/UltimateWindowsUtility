@@ -1,4 +1,5 @@
 #include "ResMon.h"
+#include <map>
 
 /*
 UINT64 ResMon::GetTheImages(DWORD Pid) {
@@ -77,14 +78,23 @@ void ResMon::GetTheInfo(PROCESSENTRY32 Process) {
     std::wstring ProcNameConvert(Process.szExeFile); //convert the WCHAR to a string so it can be used in the map
 
     if (std::wstring(Process.szExeFile).compare(L"System")&& std::wstring(Process.szExeFile).compare(L"Registry")) {//remove some problemetic processes from the loop
-        //processMap[ProcName] += Total; //add the keys that have the same process name. [] operator with maps can be dangerous.
-        ProcUsage.push_back(Total);
-        ProcNames.push_back(ProcNameConvert);//vectors are easier to use with the IMplot library
+        processMap[ProcNameConvert] += Total; //add the keys that have the same process name. [] operator with maps can be dangerous.
+        //ProcUsage.push_back(Total);
+        //ProcNames.push_back(ProcNameConvert);//vectors are easier to use with the IMplot library
     }
 
     printf("Total Memory Usage: 0x%llX \n", Total);
     printf("\n");
 }
+
+void ResMon::MapToVec(std::unordered_map<std::wstring, UINT64> &Map) {
+
+    for (std::unordered_map<std::wstring, UINT64>::iterator it = Map.begin(); it != Map.end(); ++it) {
+        ProcNames.push_back(it->first);
+        ProcUsage.push_back(it->second);
+    }
+}
+
 bool ResMon::EnumProcesses() {
     auto Snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
     if (!Snapshot)
@@ -96,6 +106,7 @@ bool ResMon::EnumProcesses() {
                 (void)GetTheInfo(Entry);
         } while (Process32Next(Snapshot, &Entry));
     }
+    MapToVec(processMap);
     WstringVecToString(ProcNames);
     CloseHandle(Snapshot);
     return true;
@@ -111,6 +122,6 @@ int ResMon::Run() {
 }
 
 void ResMon::StorageInfo() {
-    GetDiskFreeSpaceExA(NULL, NULL, NULL, FreeBytes);
+    GetDiskFreeSpaceExA(NULL, NULL, NULL, &FreeBytes);//gets storage info for cdrive good help https://stackoverflow.com/questions/69053966/getdiskfreespaceexa-woes
 
 }
