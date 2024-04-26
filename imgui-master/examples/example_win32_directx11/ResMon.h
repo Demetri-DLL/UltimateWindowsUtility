@@ -23,8 +23,9 @@ public:
     std::vector<UINT64> ProcUsage;
     std::vector<std::string> StringBuff;
     std::vector<char*> CharBuff;
-    ULARGE_INTEGER FreeBytes;
     void MapToVec(std::unordered_map<std::wstring, UINT64>& Map);
+    ULARGE_INTEGER FreeBytes;
+    ULARGE_INTEGER TotalBytes;
     DISK_SPACE_INFORMATION DiskInfo;
 };
 

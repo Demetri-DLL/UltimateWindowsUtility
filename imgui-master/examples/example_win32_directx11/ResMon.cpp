@@ -122,10 +122,12 @@ int ResMon::Run() {
 }
 
 void ResMon::StorageInfo() {
-    GetDiskFreeSpaceExA(NULL, NULL, NULL, &FreeBytes);//gets storage info for cdrive good help https://stackoverflow.com/questions/69053966/getdiskfreespaceexa-woes
-    LPCSTR Cdrive = "C:\\";
-    if (GetDiskSpaceInformationA(Cdrive, &DiskInfo)==true) {
+    GetDiskFreeSpaceExA(NULL, NULL, &TotalBytes, &FreeBytes);//gets storage info for cdrive good help https://stackoverflow.com/questions/69053966/getdiskfreespaceexa-woes
+
+    /*LPCSTR Cdrive = "C:\\";
+    if (GetDiskSpaceInformationA(Cdrive, &DiskInfo)) {
         auto TotalStorage = DiskInfo.ActualAvailableAllocationUnits;
     }
     auto testbuff = GetLastError();
+    */
 }
