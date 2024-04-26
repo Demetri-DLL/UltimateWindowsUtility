@@ -25,5 +25,6 @@ public:
     std::vector<char*> CharBuff;
     ULARGE_INTEGER FreeBytes;
     void MapToVec(std::unordered_map<std::wstring, UINT64>& Map);
+    DISK_SPACE_INFORMATION DiskInfo;
 };
 
