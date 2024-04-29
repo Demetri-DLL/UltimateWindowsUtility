@@ -43,7 +43,8 @@ void ResMon::WstringVecToString(std::vector<std::wstring>ProcNames) {
     }
 
 }
-//https://stackoverflow.com/questions/4804298/how-to-convert-wstring-into-string above code was inspired from this threads information As well as this https://stackoverflow.com/questions/7352099/stdstring-to-char
+//https://stackoverflow.com/questions/4804298/how-to-convert-wstring-into-string above code was inspired from this threads information As well as this https://stackoverflow.com/questions/7352099/stdstring-to-char my idea to do conversion this way insead of doing
+// wstring straight to char
 UINT64 ResMon::GetTheMapped(DWORD Pid) {
 
     auto Process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, Pid);
@@ -122,7 +123,29 @@ int ResMon::Run() {
 }
 
 void ResMon::StorageInfo() {
-    GetDiskFreeSpaceExA(NULL, NULL, &TotalBytes, &FreeBytes);//gets storage info for cdrive good help https://stackoverflow.com/questions/69053966/getdiskfreespaceexa-woes
+
+    auto Result = GetLogicalDriveStringsA(number, DriveBuff);
+    if (Result > 0 && Result <= 100)//realistically no one is going to have more than 100 drives
+    {
+        SingleDrive = DriveBuff;
+
+
+        while (*SingleDrive)
+        {
+
+            GetDiskFreeSpaceExA(SingleDrive, NULL, &TotalBytes, &FreeBytes);//gets storage info for cdrive good help https://stackoverflow.com/questions/69053966/getdiskfreespaceexa-woes
+            printf("C: Drive total Bytes, Free Bytes %llu\n", TotalBytes);
+            printf("C: Drive Free Bytes %llu\n", FreeBytes);
+
+            //Was using exW unicode version for the api functions but for this i changed to A.
+            //Was using W unicode function and i had to do annoying conversions.
+            //Decide between Unicode or multibyte and stick to one or datatypes will cause issues.
+
+            // get the next drive
+            SingleDrive += strlen(SingleDrive) + 1;
+        }
+    }// https://stackoverflow.com/questions/18572944/getlogicaldrivestrings-and-char-where-am-i-doing-wrongly helped with looping though the data structure. my approach was similar.
+
 
     /*LPCSTR Cdrive = "C:\\";
     if (GetDiskSpaceInformationA(Cdrive, &DiskInfo)) {
@@ -131,3 +154,4 @@ void ResMon::StorageInfo() {
     auto testbuff = GetLastError();
     */
 }
+

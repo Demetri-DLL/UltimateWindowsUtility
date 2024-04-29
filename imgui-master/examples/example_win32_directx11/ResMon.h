@@ -27,5 +27,9 @@ public:
     ULARGE_INTEGER FreeBytes;
     ULARGE_INTEGER TotalBytes;
     DISK_SPACE_INFORMATION DiskInfo;
+    LPCSTR Dir = ":\\";
+    DWORD number = 100;
+    char DriveBuff[100];
+    char* SingleDrive;
 };
 
