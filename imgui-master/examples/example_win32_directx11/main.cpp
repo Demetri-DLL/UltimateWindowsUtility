@@ -166,6 +166,17 @@ int main(int, char**)
                         ImPlot::DestroyContext();
                     }
 
+                    ImGui::SetNextItemWidth(250);
+                    ImPlot::CreateContext();
+                    if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
+                        ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
+                        ImPlot::SetupAxesLimits(0, 1, 0, 1);
+                        if (test2->ProcNames.size() > 1)
+                            ImPlot::PlotPieChart(test2->CharBuff.data(), test2->ProcUsage.data(), test2->ProcUsage.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        ImPlot::EndPlot();
+                        ImPlot::DestroyContext();
+                    }
+
 
                     ImGui::EndTabItem();
                 }
