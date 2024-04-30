@@ -150,9 +150,10 @@ int main(int, char**)
                 }
                 if (ImGui::BeginTabItem("Resource Monitoring"))
                 {
-                    if (ImGui::Button("Debug Button"))
+                    if (ImGui::Button("Debug Button")) {
                         test2->Run();
-                    test2->StorageInfo();
+                        test2->StorageInfo();
+                    }
                     ImGui::SetNextItemWidth(250);
                     //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
                     ImPlot::CreateContext();
@@ -164,6 +165,7 @@ int main(int, char**)
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext();
                     }
+
 
                     ImGui::EndTabItem();
                 }

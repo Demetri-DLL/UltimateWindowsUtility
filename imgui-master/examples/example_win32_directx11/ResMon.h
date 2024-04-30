@@ -16,6 +16,7 @@ public:
     void GetTheInfo(PROCESSENTRY32 Process);
     void WstringVecToString(std::vector<std::wstring>ProcNames);
     void StorageInfo();
+    UINT64 StorageConvert(ULARGE_INTEGER Pass);
     bool EnumProcesses();
     int Run();
     std::unordered_map<std::wstring, UINT64> processMap;
@@ -23,8 +24,11 @@ public:
     std::vector<UINT64> ProcUsage;
     std::vector<std::string> StringBuff;
     std::vector<char*> CharBuff;
+    std::vector<UINT64> TotalStorage;
     void MapToVec(std::unordered_map<std::wstring, UINT64>& Map);
     ULARGE_INTEGER FreeBytes;
+    UINT64 TotalFreeBytes;
+    UINT64 TotalTotalBytes;
     ULARGE_INTEGER TotalBytes;
     DISK_SPACE_INFORMATION DiskInfo;
     LPCSTR Dir = ":\\";

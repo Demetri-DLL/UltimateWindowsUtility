@@ -123,12 +123,15 @@ int ResMon::Run() {
 }
 
 void ResMon::StorageInfo() {
+    TotalStorage.clear();
+    TotalFreeBytes = 0;
+    TotalTotalBytes = 0;
+
 
     auto Result = GetLogicalDriveStringsA(number, DriveBuff);
-    if (Result > 0 && Result <= 100)//realistically no one is going to have more than 100 drives
+    if (Result > 0 && Result <= 100)//realistically no one is going to have more than 30 drives
     {
         SingleDrive = DriveBuff;
-
 
         while (*SingleDrive)
         {
@@ -137,15 +140,21 @@ void ResMon::StorageInfo() {
             printf("C: Drive total Bytes, Free Bytes %llu\n", TotalBytes);
             printf("C: Drive Free Bytes %llu\n", FreeBytes);
 
+
+            TotalFreeBytes += StorageConvert(TotalBytes);
+            TotalTotalBytes += StorageConvert(FreeBytes);
+
+
             //Was using exW unicode version for the api functions but for this i changed to A.
             //Was using W unicode function and i had to do annoying conversions.
             //Decide between Unicode or multibyte and stick to one or datatypes will cause issues.
 
-            // get the next drive
+            // Smart way to get the next drive.
             SingleDrive += strlen(SingleDrive) + 1;
         }
     }// https://stackoverflow.com/questions/18572944/getlogicaldrivestrings-and-char-where-am-i-doing-wrongly helped with looping though the data structure. my approach was similar.
-
+    TotalStorage.push_back(TotalFreeBytes);
+    TotalStorage.push_back(TotalTotalBytes);
 
     /*LPCSTR Cdrive = "C:\\";
     if (GetDiskSpaceInformationA(Cdrive, &DiskInfo)) {
@@ -155,3 +164,13 @@ void ResMon::StorageInfo() {
     */
 }
 
+UINT64 ResMon::StorageConvert(ULARGE_INTEGER Pass) {
+    UINT64 divisor = 1024ull * 1024ull * 1024ull;
+
+
+    UINT64 result = Pass.QuadPart / divisor; //this conversion is done for the ImPlot Functions. Luckity the QuadPart is a UINT64 and hold the correct value on 64bit systems.
+                                                //so i used that part to do the math division and covert the result into something more usable and readable.
+
+    return result;
+
+}
