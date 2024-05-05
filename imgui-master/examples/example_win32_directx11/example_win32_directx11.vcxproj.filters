@@ -35,6 +35,9 @@
     <ClInclude Include="..\..\implot_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="TaskMan.h">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="..\..\implot_items.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskMan.cpp">
+      <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

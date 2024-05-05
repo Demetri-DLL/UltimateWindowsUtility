@@ -14,6 +14,7 @@
 #include "fileman.h"
 #include "ResMon.h"
 #include "implot.h"
+#include "TaskMan.h"
 
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
@@ -86,8 +87,9 @@ int main(int, char**)
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    FileMan* test1 = new FileMan;
-    ResMon* test2 = new ResMon;
+    FileMan* pFileMan = new FileMan;
+    ResMon* pResMon = new ResMon;
+    TaskMan* pTaskMan = new TaskMan;
     // Main loop
     bool done = false;
     while (!done)
@@ -122,7 +124,7 @@ int main(int, char**)
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
-
+        
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         {
             static float f = 0.0f;
@@ -140,19 +142,19 @@ int main(int, char**)
                 if (ImGui::BeginTabItem("File Management"))
                 {
                     if (ImGui::Button("Application Temp Files"))
-                        test1->GetWindowsTempFold();
+                        pFileMan->GetWindowsTempFold();
                     ImGui::SameLine();
                     if (ImGui::Button("OS TempFiles"))
-                        test1->GetOSTempFold();
+                        pFileMan->GetOSTempFold();
                     if (ImGui::Button("Chrome User Data"))
-                        test1->GetChromeTemp();
+                        pFileMan->GetChromeTemp();
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Resource Monitoring"))
                 {
                     if (ImGui::Button("Debug Button")) {
-                        test2->Run();
-                        test2->StorageInfo();
+                        pResMon->Run();
+                        pResMon->StorageInfo();
                     }
                     ImGui::SetNextItemWidth(250);
                     //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
@@ -160,8 +162,8 @@ int main(int, char**)
                     if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                         ImPlot::SetupAxesLimits(0, 1, 0, 1);
-                        if(test2->ProcNames.size()>1)
-                        ImPlot::PlotPieChart(test2->CharBuff.data(), test2->ProcUsage.data(), test2->ProcUsage.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        if(pResMon->ProcNames.size()>1)
+                        ImPlot::PlotPieChart(pResMon->CharBuff.data(), pResMon->ProcUsage.data(), pResMon->ProcUsage.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext();
                     }
@@ -172,8 +174,8 @@ int main(int, char**)
                     if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                         ImPlot::SetupAxesLimits(0, 1, 0, 1);
-                        if (test2->ProcNames.size() > 1)
-                            ImPlot::PlotPieChart(StorageLabels, test2->TotalStorage.data(), 2, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        if (pResMon->ProcNames.size() > 1)
+                            ImPlot::PlotPieChart(StorageLabels, pResMon->TotalStorage.data(), 2, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext();
                     }
@@ -183,7 +185,71 @@ int main(int, char**)
                 }
                 if (ImGui::BeginTabItem("Misc"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+
+
+
+                    static std::vector<TaskMan::ProcessData> Data = {};
+
+                    static char SearchBuffer[1024] = { '\x0' }; //null terminator at the end
+
+                    if (ImGui::Button("Update Processes"))
+                        Data = pTaskMan->GetAllProcessesOnSystem();
+                    ImGui::InputText("##Search", SearchBuffer, 1024);
+
+                    if (ImGui::BeginTable("AdvancedTable", 3, ImGuiTableFlags_None)) {
+
+                        ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed);
+                        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed);
+                        ImGui::TableSetupColumn("Action", ImGuiTableColumnFlags_NoSort | ImGuiTableColumnFlags_WidthFixed);
+
+                        ImGui::TableHeadersRow();
+
+                        for (int i = 0; i < Data.size(); i++) {
+                            if (Data[i].Name.find(SearchBuffer) == std::string::npos)
+                                continue;
+
+                            //ImGui::PushID(Data[i].Name.c_str());
+                            ImGui::TableNextRow();
+
+                            ImGui::TableSetColumnIndex(0);
+
+                            ImGui::PushTextWrapPos(150.0f);
+
+                            ImGui::TextWrapped(Data[i].Name.c_str());
+
+                            ImGui::PopTextWrapPos();
+
+                            ImGui::TableSetColumnIndex(1);
+
+                            ImGui::Text("PID: %05d", Data[i].ProcessID);
+
+                            ImGui::TableSetColumnIndex(2);
+
+                            char SecretBuffer[1024];
+
+                            sprintf_s(SecretBuffer, "Terminate##%s", Data[i].Name.c_str());
+
+                            if (ImGui::Button(SecretBuffer)) {
+                                // Kill Code in here
+                                printf("Attempting Termination Process: %i \n", Data[i].ProcessID);
+
+                                auto Handle = OpenProcess(PROCESS_TERMINATE, NULL, Data[i].ProcessID);
+
+                                if (Handle != INVALID_HANDLE_VALUE)
+                                    if (TerminateProcess(Handle, 0xEAC))
+                                        printf("Process Killed\n");
+
+                            }
+                        }
+
+                        ImGui::EndTable();
+
+                     
+
+                    }
+
+
+
                     ImGui::EndTabItem();
                 }
                 ImGui::EndTabBar();
@@ -203,7 +269,7 @@ int main(int, char**)
             //test1->GetWindowsTempFold();
 
             /////////////////////////////////////////////
-
+      
             if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 counter++;
             ImGui::SameLine();

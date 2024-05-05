@@ -167,6 +167,7 @@
     <ClInclude Include="FileMan.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="ResMon.h" />
+    <ClInclude Include="TaskMan.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="FileMan.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResMon.cpp" />
+    <ClCompile Include="TaskMan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\misc\debuggers\imgui.natstepfilter" />
