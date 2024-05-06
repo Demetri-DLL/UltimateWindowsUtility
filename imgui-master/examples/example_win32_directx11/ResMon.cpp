@@ -137,6 +137,7 @@ int ResMon::Run() {
     ProcUsage.clear();
     StringBuff.clear();
     CharBuff.clear();
+    VecPair.clear();
     (void)EnumProcesses();
     return 0;
 }
@@ -145,7 +146,8 @@ void ResMon::StorageInfo() {
     TotalStorage.clear();
     TotalFreeBytes = 0;
     TotalTotalBytes = 0;
-
+    StorageLabels.push_back("Used Storage");
+    StorageLabels.push_back("Free Storage");
 
     auto Result = GetLogicalDriveStringsA(number, DriveBuff);
     if (Result > 0 && Result <= 100)//realistically no one is going to have more than 30 drives

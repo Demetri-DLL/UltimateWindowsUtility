@@ -16,6 +16,10 @@
 #include "implot.h"
 #include "TaskMan.h"
 
+#include <fstream>
+#include <string>
+#include "FileRead.h"
+
 // Data
 static ID3D11Device*            g_pd3dDevice = nullptr;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
@@ -39,7 +43,7 @@ int main(int, char**)
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Ultimate Windows Utility", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Ultimate Windows Utility", WS_OVERLAPPEDWINDOW, 100, 100, 801, 601, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -92,6 +96,7 @@ int main(int, char**)
     FileMan* pFileMan = new FileMan;
     ResMon* pResMon = new ResMon;
     TaskMan* pTaskMan = new TaskMan;
+    FileRead* pFileRead = new FileRead;
     // Main loop
     bool done = false;
     while (!done)
@@ -141,6 +146,9 @@ int main(int, char**)
 
             ImVec4* colors = ImGui::GetStyle().Colors;
             colors[ImGuiCol_PopupBg] = ImColor(0, 0, 0, 0);
+            auto Filegetter1 = pFileRead->ReadFileData(1);
+            auto Filegetter2 = pFileRead->ReadFileData(2);
+            auto Filegetter3 = pFileRead->ReadFileData(3);
 
             if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
             {
@@ -150,28 +158,43 @@ int main(int, char**)
                         pFileMan->GetWindowsTempFold();
                         auto AppTime = std::chrono::system_clock::now();
                         AppTimeCon = std::chrono::system_clock::to_time_t(AppTime);
+                        pFileRead->WriteFileData(AppTimeCon,"output1.txt");
+
                     }
                     ImGui::SameLine();
                     ImGui::Text("Last Cleaned on.");
-                    ImGui::Text(std::ctime(&AppTimeCon));
-                    if (ImGui::Button("OS TempFiles"))
+                    ImGui::SameLine();
+                    ImGui::Text(Filegetter1.data());
+                    if (ImGui::Button("OS TempFiles")) {
                         pFileMan->GetOSTempFold();
+                        auto AppTime = std::chrono::system_clock::now();
+                        AppTimeCon = std::chrono::system_clock::to_time_t(AppTime);
+                        pFileRead->WriteFileData(AppTimeCon, "output2.txt");
+                    }
                     ImGui::SameLine();
                     ImGui::Text("Last Cleaned on.");
-                    if (ImGui::Button("Chrome User Data"))
+                    ImGui::SameLine();
+                    ImGui::Text(Filegetter2.data());
+                    if (ImGui::Button("Chrome User Data")) {
                         pFileMan->GetChromeTemp();
+                        auto AppTime = std::chrono::system_clock::now();
+                        AppTimeCon = std::chrono::system_clock::to_time_t(AppTime);
+                        pFileRead->WriteFileData(AppTimeCon, "output3.txt");
+                    }
                     ImGui::SameLine();
                     ImGui::Text("Last Cleaned on.");
+                    ImGui::SameLine();
+                    ImGui::Text(Filegetter3.data());
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Resource Monitoring"))
                 {
-                    if (ImGui::Button("Debug Button")) {
+                    if (ImGui::Button("Retrieve Info")) {
                         pResMon->Run();
                         pResMon->StorageInfo();
                     }
+
                     ImGui::SetNextItemWidth(250);
-                    //ImGui::DragFloat4("Values", ResMon::ProcUsage.Data(), 0.01f, 0, 1);
                     ImPlot::CreateContext();
                     if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
@@ -181,19 +204,19 @@ int main(int, char**)
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext();
                     }
-
-                    static const char* StorageLabels[] = { "Used Storage","Free Storage" };
+                    
+                    
                     ImGui::SetNextItemWidth(250);
-                    ImPlot::CreateContext();
+                    //ImPlot::CreateContext();
                     if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                         ImPlot::SetupAxesLimits(0, 1, 0, 1);
                         if (pResMon->ProcNames.size() > 1)
-                            ImPlot::PlotPieChart(StorageLabels, pResMon->TotalStorage.data(), 2, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                        ImPlot::PlotPieChart(pResMon->StorageLabels.data(), pResMon->TotalStorage.data(), 2, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
                         ImPlot::DestroyContext();
                     }
-
+                    ImPlot::DestroyContext();
 
                     ImGui::EndTabItem();
                 }

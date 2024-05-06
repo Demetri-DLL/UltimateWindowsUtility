@@ -14,7 +14,7 @@ void FileMan::GetWindowsTempFold() {
     GetTempPath(MAX_PATH, lpTempPathBuffer);
 
     std::filesystem::path tempFolderPath(lpTempPathBuffer);
-    deleteDir(lpTempPathBuffer);
+    //deleteDir(lpTempPathBuffer);
 
 }
 
@@ -41,7 +41,7 @@ void FileMan::GetOSTempFold(){
         wcscpy_s(concatenatedPath, bufferSize, OSTempPath);
         wcsncat(concatenatedPath, tempAdd, bufferSize - wcslen(concatenatedPath) - 1); 
 
-        deleteDir(concatenatedPath);
+        //deleteDir(concatenatedPath);
         delete[] concatenatedPath;
         CoTaskMemFree(static_cast<void*>(OSTempPath));
     }
@@ -61,7 +61,7 @@ void FileMan::GetChromeTemp() {
         wcscpy_s(concatenatedPath, bufferSize, chromePathTemp);
         wcsncat(concatenatedPath, chromePath, bufferSize - wcslen(concatenatedPath) - 1);
 
-        deleteDir(concatenatedPath);
+       // deleteDir(concatenatedPath);
         delete[] concatenatedPath;
         CoTaskMemFree(static_cast<void*>(chromePathTemp));
 

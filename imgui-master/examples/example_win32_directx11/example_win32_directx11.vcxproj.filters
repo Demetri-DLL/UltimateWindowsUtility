@@ -38,6 +38,9 @@
     <ClInclude Include="TaskMan.h">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="FileRead.h">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui.cpp">
@@ -78,9 +81,11 @@
     <ClCompile Include="TaskMan.cpp">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="FileRead.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.txt" />
     <None Include="..\..\misc\debuggers\imgui.natvis">
       <Filter>imgui</Filter>
     </None>

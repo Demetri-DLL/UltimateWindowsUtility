@@ -39,5 +39,6 @@ public:
     DWORD number = 100;
     char DriveBuff[100];
     char* SingleDrive;
+    std::vector<char*> StorageLabels;
 };
 
