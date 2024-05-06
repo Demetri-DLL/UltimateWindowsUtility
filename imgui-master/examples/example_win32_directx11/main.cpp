@@ -202,19 +202,19 @@ int main(int, char**)
                         if(pResMon->ProcNames.size()>1)
                         ImPlot::PlotPieChart(pResMon->CharBuff.data(), pResMon->ProcUsage.data(), pResMon->ProcUsage.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
-                        ImPlot::DestroyContext();
+                        //ImPlot::DestroyContext();
                     }
                     
                     
                     ImGui::SetNextItemWidth(250);
-                    //ImPlot::CreateContext();
+                    //ImPlot::CreateContext(); mem leak
                     if (ImPlot::BeginPlot("##Pie1", ImVec2(500, 500), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
                         ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                         ImPlot::SetupAxesLimits(0, 1, 0, 1);
                         if (pResMon->ProcNames.size() > 1)
                         ImPlot::PlotPieChart(pResMon->StorageLabels.data(), pResMon->TotalStorage.data(), 2, 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
                         ImPlot::EndPlot();
-                        ImPlot::DestroyContext();
+                        //ImPlot::DestroyContext(); mem leak
                     }
                     ImPlot::DestroyContext();
 
