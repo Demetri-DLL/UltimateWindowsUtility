@@ -53,8 +53,11 @@ void FileMan::GetOSTempFold(){
 void FileMan::GetChromeTemp() {
 
     wchar_t* chromePathTemp = nullptr;
-    HRESULT hr = SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, NULL, &chromePathTemp);
-    if (SUCCEEDED(hr)) {
+    try {
+        HRESULT hr = SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, NULL, &chromePathTemp);
+        if (FAILED(hr)) {
+            throw std::runtime_error("Failed to retrieve the local app data folder path.");
+        }
         size_t bufferSize = wcslen(chromePathTemp) + wcslen(chromePath) + 1;
         wchar_t* concatenatedPath = new wchar_t[bufferSize];
 
@@ -63,8 +66,11 @@ void FileMan::GetChromeTemp() {
 
         deleteDir(concatenatedPath);
         delete[] concatenatedPath;
-        CoTaskMemFree(static_cast<void*>(chromePathTemp));
+        CoTaskMemFree(chromePathTemp);
 
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
     }
 
     /*
@@ -72,6 +78,5 @@ void FileMan::GetChromeTemp() {
     wcsncat(chromePathTemp, chromePath,30);
     //deleteDir(chromePathTemp);
     */
-
 
 }
