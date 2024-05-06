@@ -88,7 +88,26 @@ void ResMon::GetTheInfo(PROCESSENTRY32 Process) {
     printf("\n");
 }
 
-void ResMon::MapToVec(std::unordered_map<std::wstring, UINT64> &Map) {
+void ResMon::MapToVecPair(std::unordered_map<std::wstring, UINT64>& Map) {
+
+    for (auto& it : Map) {
+        VecPair.push_back(it);
+    }
+    std::sort(VecPair.begin(), VecPair.end(), [this](const auto& a, const auto& b) { //lambda func passes the object to the function such that it can have access the the mem variables.
+        return comparePairs(b, a);
+        });
+
+    for (auto& pair : VecPair) {
+        ProcNames.push_back(std::move(pair.first));
+        ProcUsage.push_back(std::move(pair.second));
+    }
+}
+
+bool ResMon::comparePairs(const std::pair<std::wstring, UINT64>& a, const std::pair<std::wstring, UINT64>& b) {
+    return a.second < b.second;
+}
+
+void ResMon::MapToVec(std::unordered_map<std::wstring, UINT64> &Map) { //Outdate and Replaced by function above, not in use.
 
     for (std::unordered_map<std::wstring, UINT64>::iterator it = Map.begin(); it != Map.end(); ++it) {
         ProcNames.push_back(it->first);
@@ -107,7 +126,7 @@ bool ResMon::EnumProcesses() {
                 (void)GetTheInfo(Entry);
         } while (Process32Next(Snapshot, &Entry));
     }
-    MapToVec(processMap);
+    MapToVecPair(processMap);
     WstringVecToString(ProcNames);
     CloseHandle(Snapshot);
     return true;

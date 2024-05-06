@@ -7,6 +7,7 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+#include <algorithm>
 
 class ResMon
 {//could use private functions and variables instead of making everything public
@@ -25,7 +26,10 @@ public:
     std::vector<std::string> StringBuff;
     std::vector<char*> CharBuff;
     std::vector<UINT64> TotalStorage;
+    std::vector<std::pair<std::wstring, UINT64>> VecPair;
     void MapToVec(std::unordered_map<std::wstring, UINT64>& Map);
+    void ResMon::MapToVecPair(std::unordered_map<std::wstring, UINT64>& Map);
+    bool comparePairs(const std::pair<std::wstring, UINT64>& a, const std::pair<std::wstring, UINT64>& b);
     ULARGE_INTEGER FreeBytes;
     UINT64 TotalFreeBytes;
     UINT64 TotalTotalBytes;

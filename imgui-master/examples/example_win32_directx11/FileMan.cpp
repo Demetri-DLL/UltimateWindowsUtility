@@ -14,7 +14,7 @@ void FileMan::GetWindowsTempFold() {
     GetTempPath(MAX_PATH, lpTempPathBuffer);
 
     std::filesystem::path tempFolderPath(lpTempPathBuffer);
-    //deleteDir(lpTempPathBuffer);
+    deleteDir(lpTempPathBuffer);
 
 }
 

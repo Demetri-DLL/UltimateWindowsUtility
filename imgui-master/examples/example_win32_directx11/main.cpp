@@ -22,6 +22,8 @@ static ID3D11DeviceContext*     g_pd3dDeviceContext = nullptr;
 static IDXGISwapChain*          g_pSwapChain = nullptr;
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
 static ID3D11RenderTargetView*  g_mainRenderTargetView = nullptr;
+std::time_t AppTimeCon;
+char TimeBuff [1024];
 
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
@@ -37,7 +39,7 @@ int main(int, char**)
     //ImGui_ImplWin32_EnableDpiAwareness();
     WNDCLASSEXW wc = { sizeof(wc), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"ImGui Example", nullptr };
     ::RegisterClassExW(&wc);
-    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Dear ImGui DirectX11 Example", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
+    HWND hwnd = ::CreateWindowW(wc.lpszClassName, L"Ultimate Windows Utility", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, nullptr, nullptr, wc.hInstance, nullptr);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -136,18 +138,30 @@ int main(int, char**)
             ImPlot::CreateContext();
             ImPlot::ShowDemoWindow();
             ImPlot::DestroyContext();
-            
+
+            ImVec4* colors = ImGui::GetStyle().Colors;
+            colors[ImGuiCol_PopupBg] = ImColor(0, 0, 0, 0);
+
             if (ImGui::BeginTabBar("MyTabBar", ImGuiTabBarFlags_None))
             {
                 if (ImGui::BeginTabItem("File Management"))
                 {
-                    if (ImGui::Button("Application Temp Files"))
+                    if (ImGui::Button("Application Temp Files")) {
                         pFileMan->GetWindowsTempFold();
+                        auto AppTime = std::chrono::system_clock::now();
+                        AppTimeCon = std::chrono::system_clock::to_time_t(AppTime);
+                    }
                     ImGui::SameLine();
+                    ImGui::Text("Last Cleaned on.");
+                    ImGui::Text(std::ctime(&AppTimeCon));
                     if (ImGui::Button("OS TempFiles"))
                         pFileMan->GetOSTempFold();
+                    ImGui::SameLine();
+                    ImGui::Text("Last Cleaned on.");
                     if (ImGui::Button("Chrome User Data"))
                         pFileMan->GetChromeTemp();
+                    ImGui::SameLine();
+                    ImGui::Text("Last Cleaned on.");
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Resource Monitoring"))
@@ -183,7 +197,7 @@ int main(int, char**)
 
                     ImGui::EndTabItem();
                 }
-                if (ImGui::BeginTabItem("Misc"))
+                if (ImGui::BeginTabItem("Terminate Applications"))
                 {
 
 
@@ -238,7 +252,7 @@ int main(int, char**)
                                 if (Handle != INVALID_HANDLE_VALUE)
                                     if (TerminateProcess(Handle, 0xEAC))
                                         printf("Process Killed\n");
-
+                                
                             }
                         }
 
@@ -269,26 +283,11 @@ int main(int, char**)
             //test1->GetWindowsTempFold();
 
             /////////////////////////////////////////////
-      
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
 
+            ImGui::ShowStyleEditor();
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             ImGui::End();
         }
-
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-
         // Rendering
         ImGui::Render();
         const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };

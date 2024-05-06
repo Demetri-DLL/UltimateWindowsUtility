@@ -11,10 +11,8 @@ class FileMan
 private:
     wchar_t lpTempPathBuffer[MAX_PATH]; //or use TCHAR
     DWORD m_dwRetVal = 0;
-    //TCHAR infoBuf[32767] = { '\0' };
     wchar_t* OSTempPath = 0;
     wchar_t* tempAdd = L"\\temp\\";
-    //wchar_t convertBuff[128];
     wchar_t* chromePath = L"\\Google\\Chrome\\User Data";
     wchar_t* chromePathTemp = 0;
 
