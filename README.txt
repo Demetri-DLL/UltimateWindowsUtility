@@ -13,6 +13,9 @@ It is recommended to build the project from scratch using the IDE Visual Studio 
 in visual studio, ensure the project is unicode(usually default), make sure the project is compiled in release and x64. Then build the project
 via the build tab. The project can be run in visual studio or ran as a standalone exe.
 
+Additionally it is Required to have administrator permissions to run the application, the app works with windows defender turned on however
+it is recommended to turn of all antiviruses as they can trigger a false positive.
+
 --------------Important File Locations--------------
 
 The Project .sln (opened using Visual Studio)
@@ -21,6 +24,9 @@ UltimateWindowsUtility->imgui-master->examples->Final Project.sln
 The Location of the .EXE file (ran as a standalone App)
 UltimateWindowsUtility->imgui-master->examples->example_win32_directx11->Release->example_win32_directx11.exe
 if built in debug look in debug folder instead of release.
+
+Most of file structure is ImGui, to view the main source files created in development find:
+UltimateWindowsUtility->imgui-master->examples->example_win32_directx11
 
 ---------------Testing and Using The app-------------
 When running the app you will be in the first Tab that removes temporary files. App Temp Files, Windows Temp Files, and Google Chrome Files.
